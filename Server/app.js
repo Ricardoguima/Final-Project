@@ -60,3 +60,44 @@ app.post("/newexpense", (req, res) => {
       res.json(data);
     });
   });
+
+  app.get("/category", (req, res) => {
+    console.log(req.query.categoryid);
+    var query;
+    if (req.query.categoryid)
+      query =
+        "SELECT * FROM Category WHERE CategoryId = " +
+        "'" +
+        req.query.categoryid +
+        "'";
+    else query = "SELECT * FROM Category";
+    connection.query(query, (err, data) => {
+      if (err) {
+        console.log("error: ", err);
+        result(err, null);
+        return;
+      }
+      console.log("Category: ", data);
+      res.json(data);
+    });
+});
+app.get("/sub_category", (req, res) => {
+  console.log(req.query.sub_categoryid);
+  var query;
+  if (req.query.sub_categoryid)
+    query =
+      "SELECT * FROM Sub_Category WHERE Sub_CategoryId = " +
+      "'" +
+      req.query.sub_categoryid +
+      "'";
+  else query = "SELECT * FROM Sub_Category";
+  connection.query(query, (err, data) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    console.log("Sub_Category: ", data);
+    res.json(data);
+  });
+});

@@ -23,12 +23,20 @@
     >
       <b-form v-if="show">
         <b-form-group id="input-group-1" label="Category" label-for="input-1">
-          <b-form-select
-            id="input-1"
-            v-model="form.categoryId"
-            :options="category"
-            required
-          ></b-form-select>
+          <div class="cascading-dropdown">
+            <div class="dropdown">
+              <select v-model="selectedCountry">
+                <option value="">Select a Category</option>
+                <option
+                  v-for="(category, id) in listCategory"
+                  :value="cateogry"
+                  :key="id"
+                >
+                  {{ category.name }}
+                </option>
+              </select>
+            </div>
+          </div>
         </b-form-group>
 
         <b-form-group
@@ -36,12 +44,20 @@
           label="Subcategory:"
           label-for="input-2"
         >
-          <b-form-select
-            id="input-2"
-            v-model="form.sub_categoryId"
-            :options="sub_category"
-            required
-          ></b-form-select>
+          <div class="cascading-dropdown">
+            <div class="dropdown">
+              <select v-model="selectedSub_Category">
+                <option value="">Select a Subcategory</option>
+                <option
+                  v-for="(sub_category, id) in listSub_category"
+                  :value="sub_category"
+                  :key="id"
+                >
+                  {{ sub_category.name }}
+                </option>
+              </select>
+            </div>
+          </div>
         </b-form-group>
 
         <b-form-group id="input-group-3" label="Item Name:" label-for="input-3">
@@ -90,31 +106,25 @@ export default {
   components: { BarChart },
   data() {
     return {
+      listCategory: [],
+      listSub_category: [],
+      selectedSub_Category: "",
+      selectedSub_Category: "",
       getResult: [],
       selectedExpense: [],
       form: {
         categoryId: null,
         sub_categoryId: null,
-        itemName: "",
+        itemName: null,
         cost: null,
         Due_Date: null,
       },
       show: true,
-      category: [
-        { text: "Grocery", value: 2 },
-        { text: "Car", value: 3 },
-        { text: "House", value: 4 },
-      ],
-      sub_category: [
-        { text: "Insurance", value: 1 },
-        { text: "Gardner", value: 2 },
-        { text: "Maintenance", value: 3 },
-      ],
     };
   },
 
   beforeMount() {
-    this.getAllData();
+    this.getAllData(), this.CategoryOptionType(), this.SubCategoryOptionType();
   },
 
   computed: {
@@ -122,7 +132,7 @@ export default {
       var customizedArray = [];
       for (var i = 0; i < this.getResult.length; i++) {
         var expense = {
-          id: this.getResult[i].id,
+          "#": this.getResult[i].id,
           category: this.getResult[i].CategoryID,
           sub_category: this.getResult[i].Sub_CategoryID,
           itemName: this.getResult[i].Item_Name,
@@ -138,6 +148,7 @@ export default {
       return customizedArray;
     },
   },
+
   methods: {
     hideModal(id) {
       this.$bvModal.hide(id);
@@ -153,11 +164,91 @@ export default {
       this.form = {};
     },
 
+    async CategoryOptionType() {
+      try {
+        const res = await fetch("http://localhost:8081/category");
+
+        if (!res.ok) {
+          const message = `An error has occured: ${res.status} - ${res.statusText}`;
+          throw new Error(message);
+        }
+
+        const data = await res.json();
+
+        const result = {
+          status: res.status + "-" + res.statusText,
+          headers: {
+            "Content-Type": res.headers.get("Content-Type"),
+            "Content-Length": res.headers.get("Content-Length"),
+          },
+          length: res.headers.get("Content-Length"),
+          data: data,
+        };
+
+        this.listCategory = result.data;
+      } catch (err) {
+        this.listCategory = err.message;
+      }
+    },
+
+    // {
+    //   const requestOptions = {
+    //     method: "GET",
+    //     headers: { "Content-Type": "application/json" },
+    //   };
+    //   const response = await fetch(
+    //     "http://localhost:8081/category",
+    //     requestOptions
+    //   );
+
+    //   this.listCategory = response.data;
+    // },
+
+    async SubCategoryOptionType() {
+      try {
+        const res = await fetch("http://localhost:8081/sub_category");
+
+        if (!res.ok) {
+          const message = `An error has occured: ${res.status} - ${res.statusText}`;
+          throw new Error(message);
+        }
+
+        const data = await res.json();
+
+        const result = {
+          status: res.status + "-" + res.statusText,
+          headers: {
+            "Content-Type": res.headers.get("Content-Type"),
+            "Content-Length": res.headers.get("Content-Length"),
+          },
+          length: res.headers.get("Content-Length"),
+          data: data,
+        };
+
+        this.listSub_category = result.data;
+      } catch (err) {
+        this.listSub_category = err.message;
+      }
+    },
+
+    // {
+    //   const requestOptions = {
+    //     method: "GET",
+    //     headers: { "Content-Type": "application/json" },
+    //   };
+    //   const response = await fetch(
+    //     "http://localhost:8081/sub_category",
+    //     requestOptions
+    //   );
+    //   this.listSub_Category = response.data;
+    // },
+
     async saveNewExpense() {
       var data = {
         categoryId: this.form.categoryId,
         sub_categoryId: this.form.sub_categoryId,
-        itemName: this.form.Item_Name,
+        
+        Item_Name: this.form.itemName,
         cost: this.form.cost,
         Due_Date: this.form.Due_Date,
       };
