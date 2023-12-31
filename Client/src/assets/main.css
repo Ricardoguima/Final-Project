@@ -39,3 +39,8 @@ body{
   linear-gradient(to bottom, #434343 0%, black 120%);
 }
 
+.card {
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px; /* Added */
+}
