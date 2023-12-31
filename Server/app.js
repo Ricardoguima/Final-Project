@@ -101,3 +101,25 @@ app.get("/sub_category", (req, res) => {
     res.json(data);
   });
 });
+
+app.get("/cost", (req, res) => {
+  console.log(req.query.CostSum);
+  var query;
+  if (req.query.CostSum)
+    query =
+      "SELECT SUM(Cost) FROM Expense" +
+      req.query.CostSum +
+      "'";
+  else query = "SELECT SUM(Cost) FROM Expense";
+  connection.query(query, (err, data) => {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+      return;
+    }
+    console.log("Cost: ", data);
+    res.json(data);
+  });
+});
+
+
