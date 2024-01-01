@@ -57,38 +57,7 @@ export default {
     }
   }
 };
-    // async getExpensesByExpenseId(ExpenseId) {
-    //   try {
-    //     const res = await fetch(
-    //       "http://localhost:8081/expense?expenseid=" + ExpenseId
-    //     );
 
-    //     if (!res.ok) {
-    //       const message = `An error has occured: ${res.status} - ${res.statusText}`;
-    //       throw new Error(message);
-    //     }
-
-    //     const data = await res.json();
-
-    //     const result = {
-    //       status: res.status + "-" + res.statusText,
-    //       headers: {
-    //         "Content-Type": res.headers.get("Content-Type"),
-    //         "Content-Length": res.headers.get("Content-Length"),
-    //       },
-    //       length: res.headers.get("Content-Length"),
-    //       data: data,
-    //     };
-
-    //     this.getResult = result.data;
-    //   } catch (err) {
-    //     this.getResult = err.message;
-    //   }
-    // },
-  // },
-  // beforeMount() {
-  //   this.getExpensesByExpenseId();
-  // },
 
 </script>
 

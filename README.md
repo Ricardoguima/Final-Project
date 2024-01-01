@@ -1,5 +1,5 @@
 # BMind
-### Video Demo: <URL>
+### Video Demo: https://youtu.be/geE0IeF1RVs
 #### Description: 
 This is my CS50 final project BMind!
 Bmind is a node.js budgeting web application that allows you to visualize and keep track of your monthly expenses. Users are able to create new expenses with a form that collects data such as category, cost, due date etc. These new submissions are then rendered to a table and saved to a database./

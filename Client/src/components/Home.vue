@@ -9,10 +9,8 @@
       style="max-width: 20rem"
       class="mb-2"
     >
-    <b-table
-      thead-tr-class="d-none"
-      :items="costSum"
-    ></b-table>
+      <!-- <b-table thead-tr-class="d-none" :items="costSum"></b-table> -->
+      <div>{{ costSum[0]["SUM(Cost)"] }}</div>
     </b-card>
   </div>
 
@@ -128,8 +126,10 @@ export default {
       for (var i = 0; i < this.getResult.length; i++) {
         var expense = {
           "#": this.getResult[i].id,
-          category: this.getCategoryName(this.getResult[i].categoryId),
-          sub_category: this.getResult[i].Sub_CategoryID,
+          category: 
+            this.getCategoryName(this.getResult[i].CategoryID),
+          sub_category:
+            this.getSubCategoryName(this.getResult[i].Sub_CategoryID),
           itemName: this.getResult[i].Item_Name,
           cost: this.getResult[i].Cost,
           Due_Date:
@@ -145,16 +145,28 @@ export default {
   },
 
   methods: {
-    getCategoryName(categoryId) {
+    getCategoryName(CategoryID) {
+      var categoryName = null;
       for (var i = 0; i < this.listCategory.length; i++) {
         var Id = this.listCategory[i].id;
-        if (Id === categoryId) {
-          
-        };
-      }
-      
-      return ;
-    },
+        if (Id === CategoryID) {  
+            categoryName = this.listCategory[i].name;
+        }
+    }
+    return categoryName;
+  },
+
+  getSubCategoryName(Sub_CategoryID) {
+      var SubCategoryName = null;
+      for (var i = 0; i < this.listSub_category.length; i++) {
+        var Id = this.listSub_category[i].id;
+        if (Id === Sub_CategoryID) {  
+            SubCategoryName = this.listSub_category[i].name;
+        }
+    }
+    return SubCategoryName;
+  },
+
     hideModal(id) {
       this.$bvModal.hide(id);
     },
